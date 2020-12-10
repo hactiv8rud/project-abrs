@@ -9,7 +9,7 @@
                     <h4 class="mb-4"><b>Enter your name to play</b></h4>
                     <form @submit.prevent="getIn">
                         <div class="form-group">
-                          <input v-model="email" type="text" class="form-control" placeholder="Enter your name here">
+                          <input v-model="name" type="text" class="form-control" placeholder="Enter your name here">
                         </div><br>
                         <button type="submit" class="btn btn-primary btn-block">Let's play!</button>
                     </form>
@@ -21,6 +21,11 @@
 
 <script>
 export default {
+  data () {
+    return {
+      name: ''
+    }
+  },
   methods: {
     getIn () {
       this.$router.push('/home')
