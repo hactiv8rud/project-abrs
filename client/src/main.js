@@ -7,7 +7,7 @@ import 'bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css'
 
 Vue.use(new VueSocketIO({
-  //debug: true,
+  // debug: true,
   connection: 'http://localhost:3000/',
   vuex: {
     store,
