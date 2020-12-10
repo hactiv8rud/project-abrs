@@ -7,8 +7,13 @@ import 'bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css'
 
 Vue.use(new VueSocketIO({
-  debug: true,
-  connection: 'http://localhost:3000/'
+  //debug: true,
+  connection: 'http://localhost:3000/',
+  vuex: {
+    store,
+    actionPrefix: 'SOCKET_',
+    mutationPrefix: 'SOCKET_'
+  }
 }))
 
 Vue.config.productionTip = false
