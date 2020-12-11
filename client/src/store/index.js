@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-
+import router from '../router'
 Vue.use(Vuex)
 
 export default new Vuex.Store({
@@ -9,7 +9,7 @@ export default new Vuex.Store({
     question: {},
     players: [],
     end: false,
-    winner: {}
+    isWinner: false
   },
   mutations: {
     SOCKET_init (state, payload) {
@@ -31,7 +31,15 @@ export default new Vuex.Store({
     },
     SOCKET_END (state, payload) {
       console.log(payload)
-      // state.winner = true
+      state.end = payload
+    },
+    SOCKET_IS_WINNER (state, payload) {
+      console.log(payload)
+      state.isWinner = payload
+    },
+    SOCKET_TOHOME () {
+      router.push('/home')
+      console.log('hit......')
     }
   },
   actions: {

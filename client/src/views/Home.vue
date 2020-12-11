@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div v-if="!end" class="container">
     <!-- <div>
     <Win></Win>
     <Lose></Lose>
@@ -32,6 +32,8 @@
 
     <p v-for="(msg, i) in messages" :key="i">{{ msg.name }} : {{ msg.answer }}</p>
   </div> -->
+  <Win v-else-if="isWinner"></Win>
+  <Lose v-else></Lose>
 </template>
 
 <script>
@@ -40,6 +42,8 @@
 // import Win from '@/components/Win'
 // import Lose from '@/components/Lose'
 import { mapState, mapGetters } from 'vuex'
+import Win from '../components/Win'
+import Lose from '../components/Lose'
 
 export default {
   name: 'Home',
@@ -50,12 +54,12 @@ export default {
       // messages: []
     }
   },
-  // components: {
-  //   Win,
-  //   Lose
-  // },
+  components: {
+    Win,
+    Lose
+  },
   computed: {
-    ...mapState(['question', 'end']),
+    ...mapState(['question', 'end', 'isWinner']),
     ...mapGetters(['sortedPlayers'])
   },
   methods: {
@@ -71,10 +75,12 @@ export default {
       }
       this.response = ''
     }
+  },
+  created () {
+    if (this.$store.state.players.length === 0) {
+      this.$router.push('/')
+    }
   }
-  // created () {
-  //   this.$store.state.question
-  // }
 }
 </script>
 
