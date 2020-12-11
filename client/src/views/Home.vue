@@ -68,6 +68,6 @@ export default {
 
 <style>
   img {
-    width: 100px
+    width: 600px;
   }
 </style>
