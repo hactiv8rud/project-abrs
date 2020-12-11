@@ -166,24 +166,37 @@ io.on('connect', function(socket) {
   socket.on('response', response => {
     // if (response === ) {
       
-    // }
-    // socket.emit('QUESTION', rawQuestions[0])
-    // console.log(rawQuestions);
-    
-    // console.log(+response, '<<<<');
-    // console.log(question.a);
-    // console.log(question.answer);
-    if (response === question.answer) {
-      question = generateQuestion()
-      io.emit('QUESTION', question)
+      // }
+      // socket.emit('QUESTION', rawQuestions[0])
+      // console.log(rawQuestions);
+      
+      // console.log(+response, '<<<<');
+      // console.log(question.a);
+      // console.log(question.answer);
+      if (response === question.answer) {
+        question = generateQuestion()
+        io.emit('QUESTION', question)
+        // console.log(usedQuestions.length);
       // question = createQuestion()
       console.log('masuk');
       increasePoints(socket.id)
       // console.log(players);
       io.emit('SCORE', players)
-
-      if (usedQuestions.length === 10) {
-        io.emit('END', true)
+      
+      if (usedQuestions.length === 3) {
+        usedQuestions = []
+        players.sort((a, b) => b.points - a.points)
+        // console.log(players);
+        const winner = players[0]
+        // io.emit('END', winner)
+        for (let i = 0; i < players.length; i++) {
+          if (i === 0) {
+            io.to(players[i].id).emit("END", "kamu menang")
+          } else {
+            io.to(players[i].id).emit("END", "kamu kalah")
+          }
+          
+        }
       }
 
     }
