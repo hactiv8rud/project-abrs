@@ -31,8 +31,9 @@ export default {
     getIn () {
       if (this.name) {
         // this.socket = window.io()
+        localStorage.setItem('username', this.name)
         this.$socket.emit('user_joined', this.name)
-        this.$router.push('/home')
+        // this.$router.push('/home')
       }
     }
   }

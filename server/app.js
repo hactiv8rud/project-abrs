@@ -16,7 +16,7 @@ const rawQuestions = [
     },
     {             
       "product": "shoes",
-      "image": "https://lh3.googleusercontent.com/proxy/lZaH2BV5JvfLXSmUphkCCbTqGTynF-eA8N67NIpfpZUM2pGK_MoIhZLFxz0Fh0YjDEpMhXrxFekTFYjfOSjDSaWggglQaa9K6Key8ONhv9cHFnvOSxt1mAUbgLrdYtoa1vA4",
+      "image": "https://images-na.ssl-images-amazon.com/images/I/81QnGdrGwsL._UL1500_.jpg",
       "price": "21?000",
       "answer": ""
   },
@@ -58,7 +58,7 @@ const rawQuestions = [
   },
   {             
       "product": "jersey",
-      "image": "https://lh3.googleusercontent.com/proxy/O7xYFPUhLg4l8fj7ywP1jn1hUd_hNY4QcUTs_a-GjsuXutKuZuX_AQ4qor8XywcmPbqZ87eYdRYuwj57flHqwE3FubJGleBOUeIBHJUH5iNQ1dWGgvA",
+      "image": "https://i5.walmartimages.com/asr/6888e434-5844-448d-9b8e-86a91b14d6a7_1.bb3869d3d6aa0e316237574722facfd0.png?odnWidth=450&odnHeight=450&odnBg=ffffff",
       "price": "55?000",
       "answer": ""
   },
@@ -97,12 +97,15 @@ let question = generateQuestion()
 
 function generateQuestion() {
   // generateAnswer()
-  let random = Math.floor(Math.random() * 10)
-  if (!usedQuestions.includes(random)) {
+  let random;
+  do {
+    random = Math.floor(Math.random() * rawQuestions.length)
     usedQuestions.push(random)
     let obj = rawQuestions[random]
     return obj
   }
+  while (!usedQuestions.includes(random));
+  
 }
 
 function generateAnswer() {
@@ -142,27 +145,30 @@ io.on('connect', function(socket) {
     // generateAnswer()
     players.push(player)
 
-    console.log(players);
+    // console.log(players);
     // console.log(question.q);
     console.log(name, 'is now connected');
     // question = createQuestion()
-
+    
     io.emit('QUESTION', question)
     io.emit('SCORE', players)
+    socket.emit('TOHOME')
+    console.log(question, 'xxxxxxxxxxxxxxxxxx')
   })
+
+  socket.on('disconnect', payload => {
+    players = players.filter(element => {
+      if (element.id !== socket.id) {
+        return element
+      }
+    })
+  }) 
 
   // socket.on('newMessage', function(payload) {
   //   console.log(payload);
   //   messages.push(payload);
   //   socket.broadcast.emit('SERVER_MESSAGE', payload);
   // })
-
-
-
-
-
-
-
   socket.on('response', response => {
     // if (response === ) {
       
@@ -173,34 +179,44 @@ io.on('connect', function(socket) {
       // console.log(+response, '<<<<');
       // console.log(question.a);
       // console.log(question.answer);
+
       if (response === question.answer) {
         question = generateQuestion()
         io.emit('QUESTION', question)
+        console.log(question, 'xxxxxxxxxxxxxxxxxxxxxxxx')
         // console.log(usedQuestions.length);
       // question = createQuestion()
-      console.log('masuk');
+    
       increasePoints(socket.id)
       // console.log(players);
       io.emit('SCORE', players)
       
       if (usedQuestions.length === 3) {
-        usedQuestions = []
-        players.sort((a, b) => b.points - a.points)
-        // console.log(players);
-        const winner = players[0]
-        // io.emit('END', winner)
+        usedQuestions.length = 0
+        // players.sort((a, b) => b.points - a.points)
+        console.log(players, "ppppppppppppppp");
+        // const winner = players[0]
+        io.emit('END', true)
         for (let i = 0; i < players.length; i++) {
           if (i === 0) {
-            io.to(players[i].id).emit("END", "kamu menang")
+            io.to(players[i].id).emit("IS_WINNER", true)
           } else {
-            io.to(players[i].id).emit("END", "kamu kalah")
+            io.to(players[i].id).emit("IS_WINNER", false)
           }
-          
         }
+        players.length = 0
       }
 
     }
   })
+
+  // socket.on('login', _ => {
+  //   socket.emit("login")
+  //   // io.emit('QUESTION', question)
+  //   // io.emit('SCORE', players)
+
+  // })
+
 });
 
 function increasePoints(id) {
