@@ -105,7 +105,6 @@ function generateQuestion() {
     return obj
   }
   while (!usedQuestions.includes(random));
-  
 }
 
 function generateAnswer() {
