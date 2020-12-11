@@ -1,15 +1,20 @@
 <template>
   <div class="container">
-    <form @submit.prevent="generateQuestion" id="submission">
-      <h1 id="question">
-        {{ question }}
-      </h1>
+    <form @submit.prevent="generateResponse" id="submission">
+      <img :src="question.image" alt="">
+      <p>{{ question.product }}</p>
+      <p>Rp {{ question.price }}</p>
       <input
         v-model="response"
         id="response"
         type="text"
+        autocomplete="off"
       />
     </form>
+    <h1>SCORE</h1>
+    <div v-for="(player, i) in players" :key="i">
+      {{ player.name }} : {{ player.points }}
+    </div>
   </div>
   <!-- <div class="home">
     <h1>Tebak Harga</h1>
@@ -39,7 +44,7 @@ export default {
     }
   },
   computed: {
-    ...mapState(['question'])
+    ...mapState(['question', 'players'])
   },
   methods: {
     // sendAnswer () {
@@ -48,16 +53,21 @@ export default {
     //   console.log(this.messages)
     //   this.answer = ''
     // },
-    generateQuestion () {
+    generateResponse () {
       if (this.response) {
         this.$socket.emit('response', this.response)
       }
+      this.response = ''
     }
   }
   // created () {
-  //   this.$socket.on('question', question => {
-  //     this.question = question
-  //   })
+  //   this.$store.state.question
   // }
 }
 </script>
+
+<style>
+  img {
+    width: 100px
+  }
+</style>

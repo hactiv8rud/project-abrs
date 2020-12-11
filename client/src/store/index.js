@@ -6,7 +6,9 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     messages: [],
-    question: ''
+    question: {},
+    players: [],
+    end: false
   },
   mutations: {
     SOCKET_init (state, payload) {
@@ -20,6 +22,14 @@ export default new Vuex.Store({
       console.log(payload)
       state.question = payload
       console.log(state.question)
+    },
+    SOCKET_SCORE (state, payload) {
+      console.log(payload)
+      state.players = payload
+      console.log(state.question)
+    },
+    SOCKET_END (state, payload) {
+      state.end = true
     }
   },
   actions: {
