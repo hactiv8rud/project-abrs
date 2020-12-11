@@ -8,32 +8,39 @@ export default new Vuex.Store({
     messages: [],
     question: {},
     players: [],
-    end: false
+    end: false,
+    winner: {}
   },
   mutations: {
     SOCKET_init (state, payload) {
       state.messages.push(payload)
     },
     SOCKET_SERVER_MESSAGE (state, payload) {
-      console.log(payload)
+      // console.log(payload)
       state.messages.push(payload)
     },
     SOCKET_QUESTION (state, payload) {
-      console.log(payload)
+      // console.log(payload)
       state.question = payload
       console.log(state.question)
     },
     SOCKET_SCORE (state, payload) {
-      console.log(payload)
+      // console.log(payload)
       state.players = payload
-      console.log(state.question)
+      // console.log(state.question)
     },
     SOCKET_END (state, payload) {
-      state.end = true
+      console.log(payload)
+      // state.winner = true
     }
   },
   actions: {
   },
   modules: {
+  },
+  getters: {
+    sortedPlayers (state) {
+      return state.players.sort((a, b) => b.points - a.points)
+    }
   }
 })

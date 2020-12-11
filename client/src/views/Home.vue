@@ -1,5 +1,9 @@
 <template>
   <div class="container">
+    <!-- <div>
+    <Win></Win>
+    <Lose></Lose>
+    </div> -->
     <form @submit.prevent="generateResponse" id="submission">
       <img :src="question.image" alt="">
       <p>{{ question.product }}</p>
@@ -12,7 +16,7 @@
       />
     </form>
     <h1>SCORE</h1>
-    <div v-for="(player, i) in players" :key="i">
+    <div v-for="(player, i) in sortedPlayers" :key="i">
       {{ player.name }} : {{ player.points }}
     </div>
   </div>
@@ -33,7 +37,10 @@
 <script>
 // @ is an alias to /src
 // import HelloWorld from '@/components/HelloWorld.vue'
-import { mapState } from 'vuex'
+// import Win from '@/components/Win'
+// import Lose from '@/components/Lose'
+import { mapState, mapGetters } from 'vuex'
+
 export default {
   name: 'Home',
   data () {
@@ -43,8 +50,13 @@ export default {
       // messages: []
     }
   },
+  // components: {
+  //   Win,
+  //   Lose
+  // },
   computed: {
-    ...mapState(['question', 'players'])
+    ...mapState(['question', 'end']),
+    ...mapGetters(['sortedPlayers'])
   },
   methods: {
     // sendAnswer () {
