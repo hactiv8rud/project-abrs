@@ -23,12 +23,17 @@
 export default {
   data () {
     return {
-      name: ''
+      name: '',
+      socket: undefined
     }
   },
   methods: {
     getIn () {
-      this.$router.push('/home')
+      if (this.name) {
+        // this.socket = window.io()
+        this.$socket.emit('user_joined', this.name)
+        this.$router.push('/home')
+      }
     }
   }
 }

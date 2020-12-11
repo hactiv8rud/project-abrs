@@ -5,14 +5,21 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    messages: []
+    messages: [],
+    question: ''
   },
   mutations: {
     SOCKET_init (state, payload) {
-      state.messages = payload
+      state.messages.push(payload)
     },
     SOCKET_SERVER_MESSAGE (state, payload) {
+      console.log(payload)
       state.messages.push(payload)
+    },
+    SOCKET_QUESTION (state, payload) {
+      console.log(payload)
+      state.question = payload
+      console.log(state.question)
     }
   },
   actions: {
